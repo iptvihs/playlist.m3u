@@ -1,0 +1,8 @@
+#EXTM3U
+
+#========================================
+# TEST ICERIK
+#========================================
+
+#EXTINF:-1 tvg-name="Test Dizi" tvg-id="testdizi" group-title="Netflix",Test Dizi S01E01
+http://example.com/test.m3u8
