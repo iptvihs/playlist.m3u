@@ -1,47 +1,30 @@
-# scripts/build_playlist.py
+import os
 
-INPUT_FILE = "data/all.m3u"
-OUTPUT_FILE = "output/playlist_final.m3u"
-SON_EKLENEN_LIMIT = 20
+# -----------------------------
+# 1️⃣ Output klasörü ve dosyası
+# -----------------------------
+if not os.path.exists("output"):
+    os.makedirs("output")
 
-def read_entries(lines):
-    entries = []
-    temp = []
-    for line in lines:
-        if line.startswith("#EXTINF"):
-            temp = [line]
-        elif line.startswith("http"):
-            temp.append(line)
-            entries.append(temp)
-            temp = []
-    return entries
+output_file = "output/playlist_final.m3u"
 
-with open(INPUT_FILE, "r", encoding="utf-8") as f:
-    lines = f.readlines()
+# -----------------------------
+# 2️⃣ Playlist verilerini hazırla
+# -----------------------------
+playlist_entries = [
+    "#EXTM3U",
+    "#EXTINF:-1 tvg-id='avatar_live_action' tvg-name='Avatar: The Last Airbender', Avatar S01E01",
+    "https://vs6.pictureflix.org/v/Avatar.The.Last.Airbender.S01E01.WEB-DL.1080p.DUAL.x264-HDM/1080.m3u8",
+    "#EXTINF:-1 tvg-id='avatar_live_action' tvg-name='Avatar: The Last Airbender', Avatar S01E02",
+    "https://vs8.photofunia.pro/v/Avatar.The.Last.Airbender.S01E02.WEB-DL.1080p.DUAL.x264-HDM/1080.m3u8"
+    # Buraya diğer bölümleri ekle
+]
 
-entries = read_entries(lines)
+# -----------------------------
+# 3️⃣ Playlist’i output dosyasına yaz
+# -----------------------------
+with open(output_file, "w", encoding="utf-8") as f:
+    for line in playlist_entries:
+        f.write(line + "\n")
 
-son_eklenenler = entries[-SON_EKLENEN_LIMIT:]
-
-with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-    f.write("#EXTM3U\n\n")
-
-    # 🔥 SON EKLENENLER
-    f.write("#========================================\n")
-    f.write("# 🔥 SON EKLENENLER\n")
-    f.write("#========================================\n\n")
-
-    for entry in reversed(son_eklenenler):
-        f.write(entry[0])
-        f.write(entry[1])
-
-    f.write("\n")
-
-    # TÜM ARŞİV
-    f.write("#========================================\n")
-    f.write("# 📦 TÜM İÇERİKLER\n")
-    f.write("#========================================\n\n")
-
-    for entry in entries:
-        f.write(entry[0])
-        f.write(entry[1])
+print(f"Playlist başarıyla yazıldı: {output_file}")
